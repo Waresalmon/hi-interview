@@ -19,4 +19,19 @@ def get_router(database: DatabaseManager, auth_verifier: AuthVerifier) -> APIRou
             clients = list_clients(session)
             return PList(data=clients)
 
+    # ---------------------------
+    # Task 1 addition
+    # ---------------------------
+    @router.get("/client/{client_id}")
+    async def show_client_information(
+        client_id: str,  # URL parameter
+        _: UserTokenInfo = auth_verifier.UserTokenInfo(),
+    ):
+        with database.create_session() as session:
+            client = get_client(session, client_id)  # business function queries DB
+            if not client:
+                raise HTTPException(status_code=404, detail="Client not found")
+            return client
+
+
     return router
