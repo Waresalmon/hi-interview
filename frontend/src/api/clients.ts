@@ -13,4 +13,8 @@ export default class ClientsApi {
         const response = await this.axiosInstance.get<{ data: Client[] }>("client");
         return response.data.data;
     };
+    public getClientById = async (id: string) => {
+        const response = await this.axiosInstance.get(`/client/${id}`);
+        return response.data; 
+    };
 }
